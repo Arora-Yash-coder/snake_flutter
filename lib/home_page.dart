@@ -26,6 +26,9 @@ class _MyHomePageState extends State<MyHomePage> {
     2,
   ];
 
+  // Snake Direction
+  var currentDirection = snakeDirection.RIGHT;
+
   // Food Pos
   int foodPos = 55;
 
@@ -35,13 +38,72 @@ class _MyHomePageState extends State<MyHomePage> {
       const Duration(milliseconds: 200),
       (timer) {
         setState(() {
-          // Add new Head
-          snakePos.add(snakePos.last + 1);
-          // Remove tail
-          snakePos.removeAt(0);
+          moveSnake();
         });
       },
     );
+  }
+
+  void moveSnake() {
+    switch (currentDirection) {
+      case snakeDirection.RIGHT:
+        {
+          // Right Wall Detection
+          if (snakePos.last % rowSize == 9) {
+            // Add new Head
+            snakePos.add(snakePos.last + 1 - rowSize);
+          } else {
+            // Add new Head
+            snakePos.add(snakePos.last + 1);
+          }
+          // Remove tail
+          snakePos.removeAt(0);
+        }
+        break;
+      case snakeDirection.LEFT:
+        {
+          // Left Wall Detection
+          if (snakePos.last % rowSize == 0) {
+            // Add new Head
+            snakePos.add(snakePos.last - 1 + rowSize);
+          } else {
+            // Add new Head
+            snakePos.add(snakePos.last - 1);
+          }
+          // Remove tail
+          snakePos.removeAt(0);
+        }
+        break;
+      case snakeDirection.UP:
+        {
+          // Top Wall Detection
+          if (snakePos.last < rowSize) {
+            // Add new Head
+            snakePos.add(snakePos.last - rowSize + totalNumberOfSquares);
+          } else {
+            // Add new Head
+            snakePos.add(snakePos.last - rowSize);
+          }
+          // Remove tail
+          snakePos.removeAt(0);
+        }
+        break;
+      case snakeDirection.DOWN:
+        {
+          // Bottom Wall Detection
+          if (snakePos.last + rowSize > totalNumberOfSquares) {
+            // Add new Head
+            snakePos.add(snakePos.last + rowSize - totalNumberOfSquares);
+          } else {
+            // Add new Head
+            snakePos.add(snakePos.last + rowSize);
+          }
+          // Remove tail
+          snakePos.removeAt(0);
+        }
+        break;
+      default:
+    }
   }
 
   @override
@@ -59,19 +121,23 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 3,
               child: GestureDetector(
                 onVerticalDragUpdate: (details) {
-                  if (details.delta.dy > 0) {
-                    print('move down');
+                  if (details.delta.dy > 0 &&
+                      currentDirection != snakeDirection.UP) {
+                    currentDirection = snakeDirection.DOWN;
                   }
-                  if (details.delta.dy < 0) {
-                    print('move up');
+                  if (details.delta.dy < 0 &&
+                      currentDirection != snakeDirection.DOWN) {
+                    currentDirection = snakeDirection.UP;
                   }
                 },
                 onHorizontalDragUpdate: (details) {
-                  if (details.delta.dx > 0) {
-                    print('move right');
+                  if (details.delta.dx > 0 &&
+                      currentDirection != snakeDirection.LEFT) {
+                    currentDirection = snakeDirection.RIGHT;
                   }
-                  if (details.delta.dx < 0) {
-                    print('move left');
+                  if (details.delta.dx < 0 &&
+                      currentDirection != snakeDirection.RIGHT) {
+                    currentDirection = snakeDirection.LEFT;
                   }
                 },
                 child: GridView.builder(
