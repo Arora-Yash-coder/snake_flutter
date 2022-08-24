@@ -57,6 +57,18 @@ class _MyHomePageState extends State<MyHomePage> {
                 return AlertDialog(
                   title: const Text('Game Over'),
                   content: Text('Your Score is $currentScore'),
+                  actions: [
+                    MaterialButton(
+                      color: Colors.pink,
+                      onPressed: () {
+                        Navigator.pop(context);
+                        setState(() {
+                          resetSnake();
+                        });
+                      },
+                      child: const Text('New Game'),
+                    ),
+                  ],
                 );
               },
             );
@@ -64,6 +76,16 @@ class _MyHomePageState extends State<MyHomePage> {
         });
       },
     );
+  }
+
+  void resetSnake() {
+    snakePos = [
+      0,
+      1,
+      2,
+    ];
+    currentScore = 0;
+    currentDirection = snakeDirection.RIGHT;
   }
 
   void moveSnake() {
