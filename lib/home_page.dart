@@ -78,6 +78,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
+  // Reset Sanke Position and score
   void resetSnake() {
     snakePos = [
       0,
@@ -88,6 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
     currentDirection = snakeDirection.RIGHT;
   }
 
+  // Snake's Movement
   void moveSnake() {
     switch (currentDirection) {
       case snakeDirection.RIGHT:
@@ -149,6 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  // Food Position
   void eatFood() {
     currentScore++;
     // Making sure food not spawns on snakes body
@@ -157,6 +160,7 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  // Checks if Game is Over
   bool gameOver() {
     List<int> snakeBody = snakePos.sublist(0, snakePos.length - 1);
     if (snakeBody.contains(snakePos.last)) {
@@ -265,7 +269,6 @@ class _MyHomePageState extends State<MyHomePage> {
                 ],
               ),
             ),
-            //Branding
           ],
         ),
       ),
